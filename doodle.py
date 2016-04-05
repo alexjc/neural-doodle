@@ -12,6 +12,7 @@ import bz2
 import pickle
 import argparse
 import warnings
+from PIL import Image
 
 
 # Configure all options first so we can custom load other libraries (Theano) based on device specified by user.
@@ -35,7 +36,8 @@ add_arg('--iterations',     default=100, type=int,          help='Number of iter
 add_arg('--device',         default='cpu', type=str,        help='Index of the GPU number to use, for theano.')
 add_arg('--safe-mode',      default=0, action='store_true', help='Use conservative Theano setting to avoid problems.')
 add_arg('--print-every',    default=10, type=int,           help='How often to log statistics to stdout.')
-add_arg('--save-every',     default=10, type=int,            help='How frequently to save PNG into `frames`.')
+add_arg('--save-every',     default=10, type=int,           help='How frequently to save PNG into `frames`.')
+add_arg('--size',     default=512, type=int,           help='Resolution of final image. Valid range is from 320 and above.')
 args = parser.parse_args()
 
 
@@ -257,8 +259,16 @@ class NeuralGenerator(object):
         """
         basename, _ = os.path.splitext(filename)
         mapname = basename + args.semantic_ext
-        img = scipy.ndimage.imread(filename, mode='RGB') if os.path.exists(filename) else None
-        map = scipy.ndimage.imread(mapname) if os.path.exists(mapname) else None
+        
+        if os.path.exists(filename):
+            resizedname = self.image_resize_byname(filename)
+            img = scipy.ndimage.imread(resizedname, mode='RGB')
+        else: img = None
+        
+        if os.path.exists(mapname):
+            resizedname = self.image_resize_byname(mapname)
+            map = scipy.ndimage.imread(resizedname)
+        else: map = None
         
         if img is not None: print('  - Loading {} image data from {}.'.format(name, filename))
         if map is not None: print('  - Loading {} semantic map from {}.'.format(name, mapname))
@@ -270,6 +280,33 @@ class NeuralGenerator(object):
             sys.exit(-1)
 
         return img, map
+
+    def image_resize_byname(self, path):
+        image = Image.open(path)
+        (w,h) = image.size
+        
+        sizearg = args.size
+        
+        if (sizearg < 320): size = 320
+        
+        if (w >= h):
+            if (w != sizearg):
+                h = int(h * sizearg / w)
+                w = sizearg
+                print('  - Resizing {} image data to {}x{}.'.format(path, w, h))
+                image = image.resize((w, h), Image.ANTIALIAS)
+        else:
+            if (h != sizearg):
+                w = int(w * sizearg / h)
+                h = sizearg
+                print('  - Resizing {} image data to {}x{}.'.format(path, w, h))
+                image = image.resize((w, h), Image.ANTIALIAS)
+        
+        tmppathname = '/tmp/' + os.path.basename(path)
+    
+        image.save(tmppathname)
+        
+        return tmppathname
 
     #------------------------------------------------------------------------------------------------------------------
     # Initialization & Setup
