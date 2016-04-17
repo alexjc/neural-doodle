@@ -30,7 +30,7 @@ add_arg('--semantic-weight', default=10.0, type=float,      help='Global weight 
 add_arg('--output',         default='output.png', type=str, help='Output image path to save once done.')
 add_arg('--resolutions',    default=3, type=int,            help='Number of image scales to process.')
 add_arg('--smoothness',     default=1E+0, type=float,       help='Weight of image smoothing scheme.')
-add_arg('--seed',           default='noise', type=str,      help='Seed image path, "noise" or "content".')
+add_arg('--seed',           default='noise', type=str,      help='Seed image path, "noise", "content" or "style".')
 add_arg('--iterations',     default=100, type=int,          help='Number of iterations to run each resolution.')
 add_arg('--device',         default='cpu', type=str,        help='Index of the GPU number to use, for theano.')
 add_arg('--safe-mode',      default=0, action='store_true', help='Use conservative Theano setting to avoid problems.')
@@ -504,6 +504,9 @@ class NeuralGenerator(object):
 
             # Setup the seed for the optimization as specified by the user.
             shape = self.content_image.shape[2:]
+            if args.seed == 'style':
+                Xn = scipy.misc.imresize(self.style_image[0], shape)
+                Xn = Xn.transpose((2, 0, 1))[np.newaxis]
             if args.seed == 'content':
                 Xn = self.content_image[0] + self.model.pixel_mean
             if args.seed == 'noise':
