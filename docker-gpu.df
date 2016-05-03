@@ -9,6 +9,7 @@ RUN apt-get update               && \
         "cmake"                     \
         "git"                       \
         "wget"                      \
+        "libopenjpeg2"              \
         "libopenblas-dev"           \
         "liblapack-dev"             \
         "libjpeg-dev"               \
@@ -31,18 +32,6 @@ RUN apt-get update               && \
         "python3-tk"             && \
     rm -rf /var/lib/apt/lists/*  && \
     python3 -m pip install "cython"
-
-# Install OpenJPEG
-
-RUN cd "/tmp"                                                                                 && \
-    wget "http://iweb.dl.sourceforge.net/project/openjpeg.mirror/2.1.0/openjpeg-2.1.0.tar.gz" && \
-    tar --extract --verbose --gzip --file openjpeg*.tar.gz                                    && \
-    rm openjpeg*.tar.gz                                                                       && \
-    cd openjpeg*                                                                              && \
-    cmake -D "CMAKE_INSTALL_PREFIX=/usr" .                                                    && \
-    make                                                                                      && \
-    make install                                                                              && \
-    rm --recursive --force *
 
 # Install requirements before copying project files
 WORKDIR /neural-doodle
