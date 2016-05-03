@@ -39,7 +39,7 @@ COPY requirements.txt .
 RUN python3 -m pip install -r "requirements.txt"
 
 # Copy only required project files
-COPY samples .
+COPY samples samples
 COPY doodle.py .
 
 # Copy Theano's configuration
