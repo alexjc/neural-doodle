@@ -43,14 +43,14 @@ RUN cd "/tmp"                                                                   
     make install                                                                              && \
     rm --recursive --force *
 
-# Copy only required project files
+# Install requirements before copying project files
 WORKDIR /neural-doodle
+COPY requirements.txt .
+RUN python3 -m pip install --ignore-installed -r "requirements.txt"
+
+# Copy only required project files
 COPY samples .
 COPY doodle.py .
-COPY requirements.txt .
-
-# Install requirements
-RUN python3 -m pip install --ignore-installed -r "requirements.txt"
 
 # Copy Theano's configuration
 
