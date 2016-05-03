@@ -46,7 +46,7 @@ RUN cd "/tmp"                                                                   
 # Install requirements before copying project files
 WORKDIR /neural-doodle
 COPY requirements.txt .
-RUN python3 -m pip install --ignore-installed -r "requirements.txt"
+RUN python3 -m pip install -r "requirements.txt"
 
 # Copy only required project files
 COPY samples .
