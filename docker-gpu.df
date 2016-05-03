@@ -43,11 +43,13 @@ RUN cd "/tmp"                                                                   
     make install                                                                              && \
     rm --recursive --force *
 
-# Download and install Neural Doodle with Theano and Lasagne
-
-RUN git clone "https://github.com/alexjc/neural-doodle.git" "/neural-doodle"
+# Copy only required project files
 WORKDIR /neural-doodle
+COPY samples .
+COPY doodle.py .
+COPY requirements.txt .
 
+# Install requirements
 RUN python3 -m pip install --ignore-installed -r "requirements.txt"
 
 # Copy Theano's configuration
