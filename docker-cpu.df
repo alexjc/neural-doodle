@@ -28,6 +28,7 @@ RUN apt-get update               && \
         "python3-six"               \
         "python3-networkx"          \
         "python3-tk"             && \
+    rm -rf /var/lib/apt/lists/*  && \
     python3 -m pip install "cython"
 
 # Install OpenJPEG
