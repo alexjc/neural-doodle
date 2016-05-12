@@ -349,7 +349,9 @@ class NeuralGenerator(object):
         """Re-implementing skimage.transform.scale without the extra dependency. Saves a lot of space and hassle!
         """
         output = scipy.misc.toimage(img, cmin=0.0, cmax=255)
-        output.thumbnail((int(output.size[0]*scale), int(output.size[1]*scale)), PIL.Image.ANTIALIAS)
+        xres = int(output.size[0]*scale/8.0)*8
+        yres = int(output.size[1]*scale/8.0)*8
+        output = output.resize((xres, yres), PIL.Image.ANTIALIAS)
         return np.asarray(output)
 
     def prepare_content(self, scale=1.0):
