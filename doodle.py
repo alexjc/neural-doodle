@@ -628,13 +628,13 @@ class NeuralGenerator(object):
             shape = self.content_img.shape[2:]
             if args.seed == 'content':
                 Xn = (self.content_img[0] + 1.0) * 127.5
-            if args.seed == 'noise':
+            elif args.seed == 'noise':
                 bounds = [int(i) for i in args.seed_range.split(':')]
                 Xn = np.random.uniform(bounds[0], bounds[1], shape + (3,)).astype(np.float32)
-            if args.seed == 'previous':
+            elif args.seed == 'previous':
                 Xn = scipy.misc.imresize(Xn[0], shape, interp='bicubic')
                 Xn = Xn.transpose((2, 0, 1))[np.newaxis]
-            if os.path.exists(args.seed):
+            elif os.path.exists(args.seed):
                 seed_image = scipy.ndimage.imread(args.seed, mode='RGB')
                 seed_image = scipy.misc.imresize(seed_image, shape, interp='bicubic')
                 self.seed_image = self.model.prepare_image(seed_image)
