@@ -5,7 +5,7 @@ Neural Doodle
 
 Use a deep neural network to borrow the skills of real artists and turn your two-bit doodles into masterpieces! This project is an implementation of `Semantic Style Transfer <http://arxiv.org/abs/1603.01768>`_ (Champandard, 2016), based on the `Neural Patches <http://arxiv.org/abs/1601.04589>`_ algorithm (Li, 2016). Read more about the motivation in this `in-depth article <https://nucl.ai/blog/neural-doodles/>`_ and watch this `workflow video <https://www.youtube.com/watch?v=fu2fzx4w3mI>`_ for inspiration.
 
-The ``doodle.py`` script generates a new image by using one, two, three or four images as inputs depending what you're trying to do: the original style and its annotation, and a target content image (optional) with its annotation (a.k.a. your doodle). The algorithm extracts annotated patches from the style image, and incrementally transfers them over to the target image based on how closely they match.
+The ``doodle.py`` script generates a new image by using one, two, three or four images as inputs, depending on what you're trying to do: the original style and its annotation, and a target content image (optional) with its annotation (a.k.a. your doodle). The algorithm extracts annotated patches from the style image, and incrementally transfers them over to the target image based on how closely they match.
 
 **NOTE**: Making a ``#NeuralDoodle`` is a skill. The parameters in the script were adjusted to work well by default and with the examples below. For new images, you may need to adjust values and modify on your input data too. It takes practice, but you can reach almost photo-realistic results if you iterate! (`Ask for advice here or see examples <https://github.com/alexjc/neural-doodle/issues?q=label%3Aadvice>`_.)
 
@@ -30,7 +30,7 @@ The main script is called ``doodle.py``, which you can run with Python 3.4+ (see
 * **GPU Rendering** — Assuming you have CUDA setup and enough on-board RAM, the process should complete in 3 to 8 minutes, even with twice the iteration count.
 * **CPU Rendering** — This will take hours and hours, even up to 12h on older hardware. To match quality it'd take twice the time. Do multiple runs in parallel!
 
-The default is to use ``cpu``, if you have NVIDIA card setup with CUDA already try ``gpu0``. On the CPU, you can also set environment variable to ``OMP_NUM_THREADS=4``, but we've found the speed improvements to be minimal.
+The default is to use ``cpu``; if you have an NVIDIA card set up with CUDA already, try ``gpu0``. On the CPU, you can also set environment variable to ``OMP_NUM_THREADS=4``, but we've found the speed improvements to be minimal.
 
 1.a) Image Analogy
 ------------------
@@ -73,7 +73,7 @@ To perform regular style transfer without semantic annotations, simply delete or
 1.c) Texture Synthesis
 ----------------------
 
-For synthesizing bitmap textures, you only need an input style without anotations and without target output.  In this case, you simply specify one input style image and the output file as follows:
+For synthesizing bitmap textures, you only need an input style without annotations and without target output.  In this case, you simply specify one input style image and the output file as follows:
 
 .. code:: bash
 
@@ -112,25 +112,25 @@ You can configure the algorithm using the following parameters. Type ``python3 d
 2.a) Using Docker Image (recommended)
 -------------------------------------
 
-The easiest way to get up-and-running is to `install Docker <https://www.docker.com/>`_. Then, you should be able to downloand and run the pre-built image using the ``docker`` command line tool.  Find out more about the ``alexjc/neural-doodle`` image on its `Docker Hub <https://hub.docker.com/r/alexjc/neural-doodle/>`_ page.
+The easiest way to get up-and-running is to `install Docker <https://www.docker.com/>`_. Then, you should be able to download and run the pre-built image using the ``docker`` command line tool.  Find out more about the ``alexjc/neural-doodle`` image on its `Docker Hub <https://hub.docker.com/r/alexjc/neural-doodle/>`_ page.
 
-The easiest way to run the script from the docker image is to setup an easy access command called `doodle`. This will automatically:
+The easiest way to run the script from the Docker image is to set up an easy access command called `doodle`. This will automatically:
 
 * Mount the ``frames`` folder from current directory into the instance for visualization.
 * Expose the ``samples`` folder from the current directory so the script can access files!
 
-This is how you can do it in your terminal console on OSX or Linux:
+This is how you can do it in your terminal console on macOS or Linux:
 
 .. code:: bash
 
     # Setup the alias. Put this in your .bash_rc or .zshrc file so it's available at startup.
     alias doodle="docker run -v $(pwd)/samples:/nd/samples -v $(pwd)/frames:/nd/frames \
                              -it alexjc/neural-doodle"
-    
+
     # Now run any of the examples above using this alias, without the `.py` extension.
     doodle --help
 
-If you want to run on your NVIDIA GPU, you can instead use the image ``alexjc/neural-doodle:gpu`` which comes with CUDA and CUDNN pre-installed in the image.  See the scripts in ``docker/*.sh`` for how to setup your host machine. (advanced)
+If you want to run it on your NVIDIA GPU, you can instead use the image ``alexjc/neural-doodle:gpu`` which comes with CUDA and CUDNN pre-installed in the image.  See the scripts in ``docker/*.sh`` for how to set up your host machine. (advanced)
 
 
 2.b) Manual Installation (optional)
@@ -142,7 +142,7 @@ This project requires Python 3.4+ and you'll also need ``numpy`` and ``scipy`` (
 2. `Mac OSX Installation of Lasagne <http://deeplearning.net/software/theano/install.html#mac-os>`_ **(advanced)**
 3. `Windows Installation of Lasagne <https://github.com/Lasagne/Lasagne/wiki/From-Zero-to-Lasagne-on-Windows-7-%2864-bit%29>`_ **(expert)**
 
-Afterward fetching the repository, you can run the following commands from your terminal to setup a local environment:
+After fetching the repository, you can run the following commands from your terminal to set up a local environment:
 
 .. code:: bash
 
@@ -176,7 +176,7 @@ To improve memory consumption, you can also install NVIDIA's ``cudnn`` library v
 How much GPU is being used? It doesn't seem very fast...
 --------------------------------------------------------
 
-First make sure CUDA is installed correctly and environment variables are set, then reinstall ``theano``.  If everything is setup correctly, the GPU should be used regularly as the gradient calculations are offloaded. If you run NVIDIA's monitoring tool it looks something like this:
+First make sure CUDA is installed correctly and environment variables are set, then reinstall ``theano``.  If everything is set up correctly, the GPU should be used regularly as the gradient calculations are offloaded. If you run NVIDIA's monitoring tool it looks something like this:
 
 .. code:: bash
     # gpu   pwr  temp    sm   mem   enc   dec  mclk  pclk
@@ -187,9 +187,9 @@ First make sure CUDA is installed correctly and environment variables are set, t
         0    59    63     0     1     0     0  3004  1240
         0    62    63    16     3     0     0  3004  1240
         0    63    64     2     1     0     0  3004  1252
-        0    66    63    26     4     0     0  3004  1252 
+        0    66    63    26     4     0     0  3004  1252
 
-The third column is the utilitazition of compute resources, and the fourth column is the use of memory.  If memory is under-used you can increase resolution!  If compute is under allocated too you can try running multiple scripts in parallel!
+The third column is the utilization of compute resources, and the fourth column is the use of memory.  If memory is under-used you can increase resolution!  If compute is under allocated too you can try running multiple scripts in parallel!
 
 **FIX:** Run ``nvidia-smi dmon`` and check the ``sm`` column.
 
@@ -197,7 +197,7 @@ The third column is the utilitazition of compute resources, and the fourth colum
 Can't install or Unable to find pgen, not compiling formal grammar.
 -------------------------------------------------------------------
 
-There's a Python extension compiler called Cython, and it's missing or inproperly installed. Try getting it directly from the system package manager rather than PIP.
+There's a Python extension compiler called Cython, and it's missing or improperly installed. Try getting it directly from the system package manager rather than PIP.
 
 *FIX:* ``sudo apt-get install cython3``
 
@@ -229,7 +229,7 @@ It seems your terminal is misconfigured and not compatible with the way Python t
 ERROR: The optimization diverged and NaNs were encountered.
 -----------------------------------------------------------
 
-It's possible there's a platform bug in the underlying libraries or compiler, which has been reported on MacOS El Capitan.  It's not clear how to fix it, but you can try to disable optimizations to prevent the bug. (See `Issue #8 <https://github.com/alexjc/neural-doodle/issues/8>`_.)
+It's possible there's a platform bug in the underlying libraries or compiler, which has been reported on macOS El Capitan.  It's not clear how to fix it, but you can try to disable optimizations to prevent the bug. (See `Issue #8 <https://github.com/alexjc/neural-doodle/issues/8>`_.)
 
 **FIX:** Use ``--safe-mode`` flag to disable optimizations.
 
@@ -237,8 +237,8 @@ It's possible there's a platform bug in the underlying libraries or compiler, wh
 4. Frequent Questions
 =====================
 
-Q: When will this be possible in realtime? I want it as filter!
----------------------------------------------------------------
+Q: When will this be possible in realtime? I want it as a filter!
+-----------------------------------------------------------------
 
 Related algorithms have shown this is possible in realtime—if you're willing to accept slightly lower quality:
 
@@ -246,7 +246,7 @@ Related algorithms have shown this is possible in realtime—if you're willing t
 * `Perceptual Losses for Real-Time Style Transfer and Super-Resolution <http://arxiv.org/abs/1603.08155>`_
 * `Precomputed Real-Time Texture Synthesis with Markovian Generative Adversarial Networks <http://arxiv.org/abs/1604.04382>`_
 
-This project is not designed for real-time use, the focus is on quality.  The code in this repository is ideal for training realtime capable networks. 
+This project is not designed for real-time use, the focus is on quality.  The code in this repository is ideal for training realtime capable networks.
 
 Q: Is there an application for this? I want to download it!
 -----------------------------------------------------------
