@@ -155,7 +155,7 @@ Afterward fetching the repository, you can run the following commands from your 
     # Setup the required dependencies simply using the PIP module.
     python3 -m pip install --ignore-installed -r requirements.txt
 
-After this, you should have ``scikit-image``, ``theano`` and ``lasagne`` installed in your virtual environment.  You'll also need to download this `pre-trained neural network <https://github.com/alexjc/neural-doodle/releases/download/v0.0/vgg19_conv.pkl.bz2>`_ (VGG19, 80Mb) and put it in the same folder as the script to run. Once you're done you can just delete the ``#/pyvenv/`` folder.
+After this, you should have ``scikit-image``, ``theano`` and ``lasagne`` installed in your virtual environment.  You'll also need to download this `pre-trained neural network <https://github.com/alexjc/neural-doodle/releases/download/v0.0/vgg19_conv.pkl.bz2>`_ (VGG19, 80MB) and put it in the same folder as the script to run. Once you're done you can just delete the ``#/pyvenv/`` folder.
 
 .. image:: docs/Coastline_example.png
 
