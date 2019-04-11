@@ -41,11 +41,11 @@ The algorithm is built for style transfer, but can also generate image analogies
 
     # Synthesize a coastline as if painted by Monet. This uses "*_sem.png" masks for both images.
     python3 doodle.py --style samples/Monet.jpg --output samples/Coastline.png \
-                      --device=cpu --iterations=40
+                      --variety 0.0 0.2 --layers 4_1 3_1 --iterations 4 6
 
     # Generate a scene around a lake in the style of a Renoir painting.
     python3 doodle.py --style samples/Renoir.jpg --output samples/Landscape.png \
-                      --device=gpu0 --iterations=80
+                      --variety 0.5 --layers 6_1 5_1 4_1 3_1 --iterations 4
 
 Notice the Renoir results look a little better than the Monet. Some rotational variations of the source image could improve the quality of the arch outline in particular.
 
@@ -58,12 +58,12 @@ If you want to transfer the style given a source style with annotations, and a t
 .. code:: bash
 
     # Synthesize a portrait of Seth Johnson like a Gogh portrait. This uses "*_sem.png" masks for both images.
-    python3 doodle.py --style samples/Gogh.jpg --content samples/Seth.png \
-                      --output SethAsGogh.png --device=cpu --phases=4 --iterations=40
+    python3 doodle.py --content samples/Seth.jpg --style samples/Gogh.jpg \
+                        --variety 0.2 0.1 --balance 0.85 1.0 --layers 4_1 3_1 --iterations 6
 
     # Generate what a photo of Vincent van Gogh would look like, using Seth's portrait as reference.
-    python3 doodle.py --style samples/Seth.jpg --content samples/Gogh.png \
-                      --output GoghAsSeth.png --device=gpu0 --phases=4 --iterations=80
+    python3 doodle.py --content samples/Gogh.jpg --style samples/Seth.jpg \
+                      --variety 0.0 --balance 0.7 0.8 --layers 4_1 3_1 --iterations 4
 
 To perform regular style transfer without semantic annotations, simply delete or rename the files with the semantic maps.  The photo is originally by `Seth Johnson <http://sethjohnson.tumblr.com/post/655063019/this-was-a-project-for-an-art-history-class-turns>`_, and the concept for this style transfer by `Kyle McDonald <https://twitter.com/kcimc>`_.
 
@@ -77,13 +77,9 @@ For synthesizing bitmap textures, you only need an input style without anotation
 
 .. code:: bash
 
-    # First synthesis uses a darker noise pattern as seed.
-    python3 doodle.py --style samples/Wall.jpg --output Wall.png\
-                      --seed=noise --seed-range=0:128 --iterations=50 --phases=3
-
-    # Second synthesis uses a lighter noise pattern as seed.
-    python3 doodle.py --style samples/Wall.jpg --output Wall.png\
-                      --seed=noise --seed-range=192:255 --iterations=50 --phases=3
+    # Generate an image of stones based on the input photograph only.
+    python3 doodle.py --style samples/Stones.jpg --output Stones.png \
+                      --layers 5_1 4_1 3_1 --iterations 6 4 4 --variety 0.4 0.2 0.1
 
 You can also control the output resolution using ``--output-size=512x512`` parameter—which also depends on the memory you have available. By default the size will be the same as the style image.
 

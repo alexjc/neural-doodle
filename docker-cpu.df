@@ -36,8 +36,8 @@ RUN python3 -m pip install -r "requirements.txt"
 # Copy only required project files
 COPY doodle.py .
 
-# Get a pre-trained neural network (VGG19)
-RUN wget -q "https://github.com/alexjc/neural-doodle/releases/download/v0.0/vgg19_conv.pkl.bz2"
+# Get a pre-trained neural network, non-commercial & attribution. (GELU2)
+RUN wget -q "https://github.com/alexjc/neural-doodle/releases/download/v0.0/gelu2_conv.pkl"
 
 # Set an entrypoint to the main doodle.py script
 ENTRYPOINT ["python3", "doodle.py", "--device=cpu"]

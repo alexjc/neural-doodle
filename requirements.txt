@@ -1,4 +1,5 @@
 colorama
 pillow>=3.2.0
 Theano>=0.8.1
-git+https://github.com/Lasagne/Lasagne.git@0440814#egg=Lasagne==0.2-dev
+git+https://github.com/Lasagne/Lasagne.git@31ac7d2#egg=Lasagne==0.2-dev
+sklearn>=0.17.1
