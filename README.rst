@@ -1,4 +1,4 @@
-Neural Doodle
+Neural Doodle guide
 =============
 
 .. image:: docs/Workflow.gif
